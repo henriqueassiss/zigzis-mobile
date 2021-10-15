@@ -1,35 +1,33 @@
-import React from 'react';
+import React from "react";
 import {
 	Text,
 	StyleSheet,
 	TouchableOpacity,
 	TouchableOpacityProps,
-} from 'react-native';
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-import fonts from '../styles/fonts';
-import colors from '../styles/colors';
+import fonts from "../styles/fonts";
+import colors from "../styles/colors";
 
 interface Props extends TouchableOpacityProps {
 	local: string;
 	dispensers: number;
 }
 
-export default function RoomCard({ local, dispensers, ...rest } : Props) {
+export default function RoomCard({ local, dispensers, ...rest }: Props) {
 	return (
-		<TouchableOpacity
-			style={styles.card}
-			activeOpacity={0.8}
-			{...rest}
-		>
+		<TouchableOpacity style={styles.card} activeOpacity={0.8} {...rest}>
+			<Ionicons
+				style={styles.cardIcon}
+				name={"information-circle"}
+				size={20}
+				color={colors.white}
+			/>
 
-			<Text style={styles.cardDispensers}>
-				{ dispensers } Dispensers
-			</Text>
+			<Text style={styles.cardDispensers}>{dispensers} Dispensers</Text>
 
-			<Text style={styles.cardTitle}>
-				{ local }
-			</Text>
-
+			<Text style={styles.cardTitle}>{local}</Text>
 		</TouchableOpacity>
 	);
 }
@@ -37,16 +35,22 @@ export default function RoomCard({ local, dispensers, ...rest } : Props) {
 const styles = StyleSheet.create({
 	card: {
 		height: 110,
-		width: '48%',
+		width: "48%",
 		marginBottom: 13,
 		paddingVertical: 12,
 		paddingHorizontal: 12,
 
-		alignItems: 'flex-start',
-		justifyContent: 'flex-end',
+		alignItems: "flex-start",
+		justifyContent: "flex-end",
 
 		borderRadius: 12,
-		backgroundColor: colors.green
+		backgroundColor: colors.green,
+	},
+
+	cardIcon: {
+		top: 10,
+		right: 10,
+		position: "absolute",
 	},
 
 	cardTitle: {

@@ -1,21 +1,19 @@
-import axios from 'axios';
-import { w3cwebsocket as W3CWebSocket } from 'websocket';
-import {
-	LoginProps,
-	AllDispenserProps,
-} from '../utils/Interfaces';
+import axios from "axios";
 
-const webSocket = new W3CWebSocket('ws://127.0.0.1:8000');
+import { DispenserProps, DeviceData, LoginProps } from "../utils/Interfaces";
+
+export const baseUrl =
+	"http://ec2-3-129-21-238.us-east-2.compute.amazonaws.com:8080";
 
 const api = axios.create({
-	baseURL: 'http://ec2-3-15-211-207.us-east-2.compute.amazonaws.com:8080'
+	baseURL: baseUrl,
 });
 
 // Dispensers
-export async function getAllDispensers() : Promise<any> {
+export async function getAllDispensers(): Promise<any> {
 	let data;
 	try {
-		await api.get('/dispenser').then(res => {
+		await api.get("/dispenser").then((res) => {
 			data = res.data;
 		});
 
@@ -25,10 +23,12 @@ export async function getAllDispensers() : Promise<any> {
 	}
 }
 
-export async function getLocalDispensers(local: string) : Promise<AllDispenserProps[]> {
-	let data: AllDispenserProps[] = [];
+export async function getLocalDispensers(
+	local: string
+): Promise<DispenserProps[]> {
+	let data: DispenserProps[] = [];
 	try {
-		await api.get('/dispenser/' + local).then(res => {
+		await api.get("/dispenser/" + local).then((res) => {
 			data = res.data.dispensers;
 		});
 
@@ -40,10 +40,37 @@ export async function getLocalDispensers(local: string) : Promise<AllDispenserPr
 	return [];
 }
 
-export async function getDeviceData() : Promise<any> {
-	let data;
+export async function getDispenserByMacAddress(
+	macAddress: string
+): Promise<DispenserProps> {
+	let data: DispenserProps = {
+		local: '',
+		fluidLevel: '',
+		allUsedCount: '',
+		used: '',
+		lastStockedTime: '',
+		macAddress: '',
+		creationDate: '',
+	};
+
 	try {
-		await api.get('/devicedata').then(res => {
+		await api.get(`/dispenser/mac/${macAddress}`).then((res) => {
+			data = res.data.dispenser;
+		});
+
+		return data;
+	} catch (error) {
+		console.error(error);
+	}
+
+	return data;
+}
+
+export async function getDeviceData(macAddress: string = ''): Promise<DeviceData[]> {
+	let data: DeviceData[] = [];
+	try {
+		const url = `/devicedata/${macAddress}`;
+		await api.get(url).then((res) => {
 			data = res.data;
 		});
 
@@ -51,13 +78,15 @@ export async function getDeviceData() : Promise<any> {
 	} catch (error) {
 		console.error(error);
 	}
+
+	return data;
 }
 
 // Users
-export async function createUser(userData: Object) : Promise<any> {
+export async function createUser(userData: Object): Promise<any> {
 	let data;
 	try {
-		await api.post('/user', userData).then(res => {
+		await api.post("/user", userData).then((res) => {
 			data = res.data;
 		});
 		return data;
@@ -66,10 +95,10 @@ export async function createUser(userData: Object) : Promise<any> {
 	}
 }
 
-export async function getUsers() : Promise<any> {
+export async function getUsers(): Promise<any> {
 	let data;
 	try {
-		await api.get('/user').then(res => {
+		await api.get("/user").then((res) => {
 			data = res.data;
 		});
 
@@ -79,10 +108,10 @@ export async function getUsers() : Promise<any> {
 	}
 }
 
-export async function loginUser(userData : LoginProps) : Promise<any> {
+export async function loginUser(userData: LoginProps): Promise<any> {
 	let data;
 	try {
-		await api.post('/user/login', userData).then(res => {
+		await api.post("/user/login", userData).then((res) => {
 			data = res.data.user;
 		});
 
@@ -90,15 +119,4 @@ export async function loginUser(userData : LoginProps) : Promise<any> {
 	} catch (error) {
 		console.error(error);
 	}
-}
-
-// WebSocket
-export function setWebSocket() {
-	webSocket.onopen = () => {
-		console.log('WebSocket Client Connected');
-	};
-
-	webSocket.onmessage = (message) => {
-		console.log(message);
-	};
 }

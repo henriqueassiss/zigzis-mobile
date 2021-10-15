@@ -1,19 +1,32 @@
 // Dispensers
-export interface AllDispenserProps {
-	id: number;
-    fluidLevel: number;
+export interface DispenserProps {
+	fluidLevel: string;
 	local: string;
-    used: number;
-    allUsedCount: number;
-    macAddress: string;
-    creationDate: string;
-    lastStockedTime: string;
+	used: string;
+	macAddress: string;
+	lastStockedTime: string;
+	allUsedCount: string;
+	creationDate: string;
+	onPress?: () => void;
 }
 
-export interface DispenserProps {
+export interface DispenserReducedProps {
+	fluidLevel: string;
 	local: string;
-	fluidLevel: number;
-	used: number;
+	used: string;
+	macAddress: string;
+	lastStockedTime: string;
+	onPress: () => void;
+}
+
+export interface DeviceData {
+	dispenser: DispenserProps;
+	fluidLevel: string;
+	local: string;
+	used: string;
+	allUsedCount: string;
+	updatedTime: string;
+	stocked: boolean;
 }
 
 export interface RoomListProps {
@@ -30,12 +43,12 @@ export interface AllUserProps {
 	cpf: number;
 	login: string;
 	position: string;
-	role: 'admin'|'analist'|'viewer';
+	role: "admin" | "analist" | "viewer";
 }
 
 export interface UserProps {
 	name: string;
-	role: 'admin'|'analist'|'viewer';
+	role: "admin" | "analist" | "viewer";
 }
 
 export interface LoginProps {

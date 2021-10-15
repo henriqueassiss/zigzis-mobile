@@ -12,10 +12,10 @@ import {
 import fonts from "../styles/fonts";
 import colors from "../styles/colors";
 import logo from "../../assets/logo.png";
+import { loginUser } from "../services/index";
 import { UserProps } from "../utils/Interfaces";
 import SubmitButton from "../components/SubmitButton";
 import DefaultInput from "../components/DefaultInput";
-import { loginUser, setWebSocket } from "../services/index";
 import RegisterAnimation from "../components/RegisterAnimation";
 
 const { width, height } = Dimensions.get("window");
@@ -97,10 +97,10 @@ export default function Login({ navigation }: any) {
 
 			setIsLoading(false);
 
-			if (userData.role === "viewer") {
-				navigation.navigate("Rooms", userData);
-			} else {
+			if (userData.role === "admin") {
 				navigation.navigate("Home", userData);
+			} else {
+				navigation.navigate("Rooms", userData);
 			}
 		} else {
 			Alert.alert(alertData.title, alertData.message);
@@ -145,7 +145,7 @@ export default function Login({ navigation }: any) {
 					<SubmitButton
 						text={"Pronto!"}
 						isLoading={isLoading}
-						onPress={setWebSocket}
+						onPress={submit}
 					/>
 				</View>
 			</View>

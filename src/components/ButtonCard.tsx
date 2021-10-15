@@ -1,35 +1,39 @@
-import React from 'react';
+import React from "react";
 import {
 	Text,
 	StyleSheet,
 	TouchableOpacity,
 	TouchableOpacityProps,
-} from 'react-native';
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-import fonts from '../styles/fonts';
-import colors from '../styles/colors';
+import fonts from "../styles/fonts";
+import colors from "../styles/colors";
 
 interface Props extends TouchableOpacityProps {
 	title: string;
 	description: string;
+	icon: "person" | "information-circle";
 }
 
-export default function ButtonCard({ title, description, ...rest } : Props) {
+export default function ButtonCard({
+	title,
+	description,
+	icon,
+	...rest
+}: Props) {
 	return (
-		<TouchableOpacity
-			style={styles.card}
-			activeOpacity={0.8}
-			{...rest}
-		>
+		<TouchableOpacity style={styles.card} activeOpacity={0.8} {...rest}>
+			<Ionicons
+				style={styles.cardIcon}
+				name={icon}
+				size={20}
+				color={colors.white}
+			/>
 
-			<Text style={styles.cardDispensers}>
-				{ description }
-			</Text>
+			<Text style={styles.cardDispensers}>{description}</Text>
 
-			<Text style={styles.cardTitle}>
-				{ title }
-			</Text>
-
+			<Text style={styles.cardTitle}>{title}</Text>
 		</TouchableOpacity>
 	);
 }
@@ -37,16 +41,21 @@ export default function ButtonCard({ title, description, ...rest } : Props) {
 const styles = StyleSheet.create({
 	card: {
 		height: 110,
-		width: '100%',
+		width: "100%",
 		marginBottom: 13,
 		paddingVertical: 12,
 		paddingHorizontal: 12,
 
-		alignItems: 'flex-start',
-		justifyContent: 'flex-end',
+		alignItems: "flex-start",
+		justifyContent: "flex-end",
 
 		borderRadius: 12,
-		backgroundColor: colors.green
+		backgroundColor: colors.green,
+	},
+	cardIcon: {
+		top: 10,
+		right: 10,
+		position: "absolute",
 	},
 
 	cardTitle: {

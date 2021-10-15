@@ -1,67 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  FlatList,
-  StyleSheet,
-} from 'react-native';
+import React, { useState, useEffect } from "react";
+import { View, FlatList, StyleSheet } from "react-native";
 
-import colors from '../styles/colors';
-import Load from '../components/Load';
-import Header from '../components/Header';
-import RoomCard from '../components/RoomCard';
-import { getAllDispensers } from '../services';
-import { UserProps, RoomListProps, AllDispenserProps } from '../utils/Interfaces';
+import colors from "../styles/colors";
+import Load from "../components/Load";
+import Header from "../components/Header";
+import RoomCard from "../components/RoomCard";
+import { getAllDispensers } from "../services";
+import { UserProps, RoomListProps, DispenserProps } from "../utils/Interfaces";
 
-export default function Rooms({ route, navigation } : any) {
+export default function Rooms({ route, navigation }: any) {
 	// Rooms State
-	const [ roomsList, setRoomsList ] = useState<RoomListProps[]>([]);
+	const [roomsList, setRoomsList] = useState<RoomListProps[]>([]);
 
 	// General
 	const user: UserProps = route.params;
-	const [ isLoading, setIsLoading ] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		async function fetchDispensers() {
 			setIsLoading(true);
-			const dispensersDataFromAPI: AllDispenserProps[] = await getAllDispensers();
+			const dispensersDataFromAPI: DispenserProps[] =
+				await getAllDispensers();
 
 			let roomDispensers: number = 0;
 			let bathroomDispensers: number = 0;
 			let corridorDispensers: number = 0;
 			let elevatorDispensers: number = 0;
 
-			dispensersDataFromAPI.forEach(dispenser => {
-				if (dispenser.local.includes('Sala')) {
+			dispensersDataFromAPI.forEach((dispenser) => {
+				if (dispenser.local.includes("Sala")) {
 					roomDispensers++;
-				} else if (dispenser.local.includes('Banheiro')) {
+				} else if (dispenser.local.includes("Banheiro")) {
 					bathroomDispensers++;
-				} else if (dispenser.local.includes('Corredor')) {
+				} else if (dispenser.local.includes("Corredor")) {
 					corridorDispensers++;
-				} else if (dispenser.local.includes('Elevador')) {
+				} else if (dispenser.local.includes("Elevador")) {
 					elevatorDispensers++;
 				}
 			});
 
 			const roomsData: RoomListProps[] = [
 				{
-					local: 'Sala',
+					local: "Sala",
 					dispensers: roomDispensers,
-					onPress: () => navigation.navigate('Dispensers', 'sala'),
+					onPress: () => navigation.navigate("Dispensers", "sala"),
 				},
 				{
-					local: 'Banheiro',
+					local: "Banheiro",
 					dispensers: bathroomDispensers,
-					onPress: () => navigation.navigate('Dispensers', 'banheiro'),
+					onPress: () =>
+						navigation.navigate("Dispensers", "banheiro"),
 				},
 				{
-					local: 'Corredor',
+					local: "Corredor",
 					dispensers: corridorDispensers,
-					onPress: () => navigation.navigate('Dispensers', 'corredor'),
+					onPress: () =>
+						navigation.navigate("Dispensers", "corredor"),
 				},
 				{
-					local: 'Elevador',
+					local: "Elevador",
 					dispensers: elevatorDispensers,
-					onPress: () => navigation.navigate('Dispensers', 'elevador'),
+					onPress: () =>
+						navigation.navigate("Dispensers", "elevador"),
 				},
 			];
 
@@ -73,27 +73,26 @@ export default function Rooms({ route, navigation } : any) {
 	}, []);
 
 	function HandleUserData(user: UserProps) {
-		if (user.role === 'viewer') {
+		if (user.role === "viewer") {
 			return <Header {...user} />;
 		}
 
 		return <></>;
 	}
 
-	if (isLoading) return <Load width={'50%'} />
+	if (isLoading) return <Load width={"50%"} />;
 
 	return (
 		<View style={styles.container}>
-
-			<HandleUserData {...user}/>
+			<HandleUserData {...user} />
 
 			<FlatList
 				style={styles.roomsList}
-				columnWrapperStyle={{justifyContent: 'space-between'}}
+				columnWrapperStyle={{ justifyContent: "space-between" }}
 				numColumns={2}
 				data={roomsList}
 				keyExtractor={(item, index) => String(index)}
-				renderItem={({item}) => {
+				renderItem={({ item }) => {
 					return (
 						<RoomCard
 							local={item.local}
@@ -103,7 +102,6 @@ export default function Rooms({ route, navigation } : any) {
 					);
 				}}
 			/>
-
 		</View>
 	);
 }
@@ -111,8 +109,8 @@ export default function Rooms({ route, navigation } : any) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'flex-start',
+		alignItems: "center",
+		justifyContent: "flex-start",
 
 		padding: 32,
 
@@ -120,6 +118,6 @@ const styles = StyleSheet.create({
 	},
 
 	roomsList: {
-		width: '100%',
+		width: "100%",
 	},
 });
