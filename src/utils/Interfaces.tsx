@@ -11,6 +11,7 @@ export interface DispenserProps {
 }
 
 export interface DispenserReducedProps {
+	role: string;
 	fluidLevel: string;
 	local: string;
 	used: string;
@@ -54,4 +55,12 @@ export interface UserProps {
 export interface LoginProps {
 	login: string;
 	password: string;
+}
+
+// Other
+export interface DashBoardProps {
+	allUsedCount: string;
+	allStockedTimes: string;
+	allUsedCountByMonth: Array<number>;
+	allStockedTimesByMonth: Array<number>;
 }

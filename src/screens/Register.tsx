@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
 	View,
 	Text,
@@ -6,75 +6,75 @@ import {
 	Dimensions,
 	ScrollView,
 	StyleSheet,
-} from 'react-native';
+} from "react-native";
 
-import fonts from '../styles/fonts';
-import colors from '../styles/colors';
-import logo from '../../assets/logo.png';
-import RolePicker from '../components/Picker';
-import SubmitButton from '../components/SubmitButton';
-import DefaultInput from '../components/DefaultInput';
-import RegisterAnimation from '../components/RegisterAnimation';
-import { createUser } from '../services';
+import fonts from "../styles/fonts";
+import colors from "../styles/colors";
+import logo from "../../assets/logo.png";
+import { createUser } from "../services";
+import RolePicker from "../components/Picker";
+import SubmitButton from "../components/SubmitButton";
+import DefaultInput from "../components/DefaultInput";
+import RegisterAnimation from "../components/RegisterAnimation";
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 
-export default function Register({ navigation } : any) {
+export default function Register({ navigation }: any) {
 	// Name States
-	const [ name, setName ] = useState('');
-	const [ isNameFocused, setIsNameFocused ] = useState(false);
-	const [ isNameInvalid, setIsNameInvalid ] = useState(false);
+	const [name, setName] = useState("");
+	const [isNameFocused, setIsNameFocused] = useState(false);
+	const [isNameInvalid, setIsNameInvalid] = useState(false);
 
 	// Email States
-	const [ email, setEmail ] = useState('');
-	const [ isEmailFocused, setIsEmailFocused ] = useState(false);
-	const [ isEmailInvalid, setIsEmailInvalid ] = useState(false);
+	const [email, setEmail] = useState("");
+	const [isEmailFocused, setIsEmailFocused] = useState(false);
+	const [isEmailInvalid, setIsEmailInvalid] = useState(false);
 
 	// CPF States
-	const [ cpf, setCpf ] = useState('');
-	const [ isCpfFocused, setIsCpfFocused ] = useState(false);
-	const [ isCpfInvalid, setIsCpfInvalid ] = useState(false);
+	const [cpf, setCpf] = useState("");
+	const [isCpfFocused, setIsCpfFocused] = useState(false);
+	const [isCpfInvalid, setIsCpfInvalid] = useState(false);
 
 	// Position States
-	const [ position, setPosition ] = useState('');
-	const [ isPositionFocused, setIsPositionFocused ] = useState(false);
-	const [ isPositionInvalid, setIsPositionInvalid ] = useState(false);
+	const [position, setPosition] = useState("");
+	const [isPositionFocused, setIsPositionFocused] = useState(false);
+	const [isPositionInvalid, setIsPositionInvalid] = useState(false);
 
 	// Password States
-	const [ password, setPassword] = useState('');
-	const [ isPasswordFocused, setIsPasswordFocused ] = useState(false);
-	const [ isPasswordInvalid, setIsPasswordInvalid ] = useState(false);
-	const [ isPasswordHidden, setIsPasswordHidden ] = useState(true);
-	const [ passwordIcon, setPasswordIcon ] = useState<'eye'|'eye-off'>('eye');
+	const [password, setPassword] = useState("");
+	const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+	const [isPasswordInvalid, setIsPasswordInvalid] = useState(false);
+	const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+	const [passwordIcon, setPasswordIcon] = useState<"eye" | "eye-off">("eye");
 
 	// Role States
-	const [ role, setRole ] = useState<'admin'|'analist'|'viewer'>('viewer');
+	const [role, setRole] = useState<"admin" | "analist" | "viewer">("viewer");
 
 	// General
-	const [ isLoading, setIsLoading ] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const inputs = [
 		{
-			name: 'name',
+			name: "name",
 			value: name,
 			function: setIsNameInvalid,
 		},
 		{
-			name: 'email',
+			name: "email",
 			value: email,
 			function: setIsEmailInvalid,
 		},
 		{
-			name: 'password',
+			name: "password",
 			value: password,
 			function: setIsPasswordInvalid,
 		},
 		{
-			name: 'cpf',
+			name: "cpf",
 			value: cpf,
 			function: setIsCpfInvalid,
 		},
 		{
-			name: 'position',
+			name: "position",
 			value: position,
 			function: setIsPositionInvalid,
 		},
@@ -90,7 +90,7 @@ export default function Register({ navigation } : any) {
 	}
 
 	function handleNameFocus() {
-		if (name !== '' || !isNameFocused) {
+		if (name !== "" || !isNameFocused) {
 			setIsNameFocused(true);
 		} else {
 			setIsNameFocused(false);
@@ -107,7 +107,7 @@ export default function Register({ navigation } : any) {
 	}
 
 	function handleEmailFocus() {
-		if (email !== '' || !isEmailFocused) {
+		if (email !== "" || !isEmailFocused) {
 			setIsEmailFocused(true);
 		} else {
 			setIsEmailFocused(false);
@@ -124,7 +124,7 @@ export default function Register({ navigation } : any) {
 	}
 
 	function handleCpfFocus() {
-		if (cpf !== '' || !isCpfFocused) {
+		if (cpf !== "" || !isCpfFocused) {
 			setIsCpfFocused(true);
 		} else {
 			setIsCpfFocused(false);
@@ -141,7 +141,7 @@ export default function Register({ navigation } : any) {
 	}
 
 	function handlePositionFocus() {
-		if (position !== '' || !isPositionFocused) {
+		if (position !== "" || !isPositionFocused) {
 			setIsPositionFocused(true);
 		} else {
 			setIsPositionFocused(false);
@@ -158,7 +158,7 @@ export default function Register({ navigation } : any) {
 	}
 
 	function handlePasswordFocus() {
-		if (password !== '' || !isPasswordFocused) {
+		if (password !== "" || !isPasswordFocused) {
 			setIsPasswordFocused(true);
 		} else {
 			setIsPasswordFocused(false);
@@ -169,14 +169,14 @@ export default function Register({ navigation } : any) {
 		setIsPasswordHidden(!isPasswordHidden);
 
 		if (isPasswordHidden) {
-			setPasswordIcon('eye-off');
+			setPasswordIcon("eye-off");
 		} else {
-			setPasswordIcon('eye');
+			setPasswordIcon("eye");
 		}
 	}
 
 	// Role Functions
-	function handleRoleValue(value: 'admin'|'analist'|'viewer') {
+	function handleRoleValue(value: "admin" | "analist" | "viewer") {
 		setRole(value);
 	}
 
@@ -184,11 +184,11 @@ export default function Register({ navigation } : any) {
 	function verifyInputs() {
 		let hasError = false;
 
-		inputs.forEach(input => {
-			if (input.value === '') {
+		inputs.forEach((input) => {
+			if (input.value === "") {
 				input.function(true);
 				hasError = true;
-			};
+			}
 		});
 
 		return hasError;
@@ -211,28 +211,22 @@ export default function Register({ navigation } : any) {
 
 		createUser(user);
 		setIsLoading(false);
-		navigation.navigate('Home');
+		navigation.navigate("Home");
 	}
 
 	return (
 		<>
-
 			<ScrollView>
-
 				<View style={styles.container}>
-
 					<Image style={styles.logo} source={logo} />
 
 					<RegisterAnimation margin={-35} />
 
 					<View style={styles.form}>
-
-						<Text style={styles.formTitle}>
-							Cadastrar
-						</Text>
+						<Text style={styles.formTitle}>Cadastrar</Text>
 
 						<DefaultInput
-							placeholder={'Nome'}
+							placeholder={"Nome"}
 							isInvalid={isNameInvalid}
 							isFocused={isNameFocused}
 							onFocus={handleNameFocus}
@@ -241,7 +235,7 @@ export default function Register({ navigation } : any) {
 						/>
 
 						<DefaultInput
-							placeholder={'Email'}
+							placeholder={"Email"}
 							isInvalid={isEmailInvalid}
 							isFocused={isEmailFocused}
 							onFocus={handleEmailFocus}
@@ -250,8 +244,8 @@ export default function Register({ navigation } : any) {
 						/>
 
 						<DefaultInput
-							type={'password'}
-							placeholder={'Senha'}
+							type={"password"}
+							placeholder={"Senha"}
 							isInvalid={isPasswordInvalid}
 							isFocused={isPasswordFocused}
 							onFocus={handlePasswordFocus}
@@ -263,7 +257,7 @@ export default function Register({ navigation } : any) {
 						/>
 
 						<DefaultInput
-							placeholder={'CPF'}
+							placeholder={"CPF"}
 							maxLength={14}
 							isInvalid={isCpfInvalid}
 							isFocused={isCpfFocused}
@@ -273,7 +267,7 @@ export default function Register({ navigation } : any) {
 						/>
 
 						<DefaultInput
-							placeholder={'Cargo'}
+							placeholder={"Cargo"}
 							isInvalid={isPositionInvalid}
 							isFocused={isPositionFocused}
 							onFocus={handlePositionFocus}
@@ -281,21 +275,15 @@ export default function Register({ navigation } : any) {
 							onChangeText={(text) => handlePositionValue(text)}
 						/>
 
-						<RolePicker
-							oldRole={role}
-							onChange={handleRoleValue}
-						/>
+						<RolePicker oldRole={role} onChange={handleRoleValue} />
 
 						<SubmitButton
-							text={'Pronto!'}
+							text={"Pronto!"}
 							isLoading={isLoading}
 							onPress={submit}
 						/>
-
 					</View>
-
 				</View>
-
 			</ScrollView>
 		</>
 	);
@@ -304,15 +292,15 @@ export default function Register({ navigation } : any) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
+		alignItems: "center",
+		justifyContent: "center",
 
 		backgroundColor: colors.green_bright,
 	},
 
 	logo: {
 		width: width * 0.6,
-		resizeMode: 'contain'
+		resizeMode: "contain",
 	},
 
 	form: {
@@ -325,7 +313,7 @@ const styles = StyleSheet.create({
 		borderTopRightRadius: 16,
 		backgroundColor: colors.white,
 
-		justifyContent: 'center',
+		justifyContent: "center",
 	},
 
 	formTitle: {
@@ -347,4 +335,3 @@ const styles = StyleSheet.create({
 		color: colors.green,
 	},
 });
-

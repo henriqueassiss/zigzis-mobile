@@ -1,9 +1,10 @@
 import axios from "axios";
 
+import { formatDate } from '../utils';
 import { DispenserProps, DeviceData, LoginProps } from "../utils/Interfaces";
 
 export const baseUrl =
-	"http://ec2-3-129-21-238.us-east-2.compute.amazonaws.com:8080";
+	"http://ec2-18-118-189-240.us-east-2.compute.amazonaws.com:8080";
 
 const api = axios.create({
 	baseURL: baseUrl,
@@ -30,6 +31,12 @@ export async function getLocalDispensers(
 	try {
 		await api.get("/dispenser/" + local).then((res) => {
 			data = res.data.dispensers;
+		});
+
+		data.forEach((_data) => {
+			const {month, formattedDate} = formatDate(_data.lastStockedTime);
+
+			_data.lastStockedTime = formattedDate;
 		});
 
 		return data;
@@ -72,6 +79,12 @@ export async function getDeviceData(macAddress: string = ''): Promise<DeviceData
 		const url = `/devicedata/${macAddress}`;
 		await api.get(url).then((res) => {
 			data = res.data;
+		});
+
+		data.forEach((_data) => {
+			const {month, formattedDate} = formatDate(_data.updatedTime);
+
+			_data.updatedTime = formattedDate;
 		});
 
 		return data;

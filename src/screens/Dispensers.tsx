@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 
+import colors from "../styles/colors";
 import Load from "../components/Load";
 import { getLocalDispensers } from "../services";
+
 import { DispenserProps } from "../utils/Interfaces";
 import { DispenserCard } from "../components/DispenserCard";
 
@@ -11,20 +13,15 @@ export default function Dispensers({ route, navigation }: any) {
 	const [dispensers, setDispensers] = useState<DispenserProps[]>([]);
 
 	// General
-	const local = route.params;
-	const [isLoading, setIsLoading] = useState(false);
+	const params = route.params;
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		async function fetchDispensers() {
-			if (dispensers === []) {
-				setIsLoading(true);
-			} else {
-				setIsLoading(false);
-			}
-			setDispensers(await getLocalDispensers(local));
+			setDispensers(await getLocalDispensers(params.local));
 		}
 
-		fetchDispensers();
+		fetchDispensers().then(() => setIsLoading(false));
 	}, []);
 
 	if (isLoading) return <Load width={"50%"} />;
@@ -37,6 +34,7 @@ export default function Dispensers({ route, navigation }: any) {
 				renderItem={({ item }) => {
 					return (
 						<DispenserCard
+							role={params.role}
 							local={item.local}
 							fluidLevel={item.fluidLevel}
 							used={item.used}
@@ -58,6 +56,8 @@ export default function Dispensers({ route, navigation }: any) {
 
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
 		padding: 32,
+		backgroundColor: colors.green_extreme,
 	},
 });

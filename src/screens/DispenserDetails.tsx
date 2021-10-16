@@ -1,31 +1,99 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 
-import Chart from "../components/Chart";
-import ChartCard from "../components/ChartCard";
+import fonts from "../styles/fonts";
+import colors from "../styles/colors";
 import Load from "../components/Load";
-import { getDispenserByMacAddress, getDeviceData } from "../services";
+import { getDeviceData } from "../services";
+import ChartCard from "../components/ChartCard";
+import { formatDate, dashBoard } from "../utils";
+import { DashBoardProps } from "../utils/Interfaces";
+import { DefaultBarChart, DefaultLineChart } from "../components/Chart";
 
 export default function DispenserDetails({ route }: any) {
+	// Route Params
 	const macAddress = route.params;
+
+	// DashBoard States
+	const [dashBoardData, setDashBoardData] =
+		useState<DashBoardProps>(dashBoard);
+
+	// General States
 	const [isLoading, setIsLoading] = useState(true);
-	const [data, setData] = useState({ allUsedCount: "", allStockedTimes: "" });
+
+	// Cards Data
+	const cardsData = [
+		{
+			title: "Total Utilizado",
+			data: dashBoardData.allUsedCount,
+		},
+		{
+			title: "Total Abastecido",
+			data: dashBoardData.allStockedTimes,
+		},
+	];
 
 	useEffect(() => {
 		async function fetchDispenserData() {
-			const dispenser = await getDispenserByMacAddress(macAddress);
-			const deviceData = await getDeviceData(macAddress);
-			let stockedTimes = 0;
+			// const monthUsedTime = [
+			// 	parseInt((Math.random() * 50).toFixed(0)),
+			// 	parseInt((Math.random() * 50).toFixed(0)),
+			// 	parseInt((Math.random() * 50).toFixed(0)),
+			// 	parseInt((Math.random() * 50).toFixed(0)),
+			// 	parseInt((Math.random() * 50).toFixed(0)),
+			// 	parseInt((Math.random() * 50).toFixed(0)),
+			// 	parseInt((Math.random() * 50).toFixed(0)),
+			// 	parseInt((Math.random() * 50).toFixed(0)),
+			// 	parseInt((Math.random() * 50).toFixed(0)),
+			// 	0,
+			// 	0,
+			// 	0,
+			// ];
 
-			deviceData.forEach((data) => {
-				if (data.stocked) {
-					stockedTimes++;
+			const monthUsedTime = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+			// const monthStockedTime = [
+			// 	parseInt((Math.random() * 20).toFixed(0)),
+			// 	parseInt((Math.random() * 20).toFixed(0)),
+			// 	parseInt((Math.random() * 20).toFixed(0)),
+			// 	parseInt((Math.random() * 20).toFixed(0)),
+			// 	parseInt((Math.random() * 20).toFixed(0)),
+			// 	parseInt((Math.random() * 20).toFixed(0)),
+			// 	parseInt((Math.random() * 20).toFixed(0)),
+			// 	parseInt((Math.random() * 20).toFixed(0)),
+			// 	parseInt((Math.random() * 20).toFixed(0)),
+			// 	0,
+			// 	0,
+			// 	0,
+			// ];
+
+			const monthStockedTime = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+			let allUsedCount = 0;
+			let allStockedTimes = 0;
+			const dispensersData = await getDeviceData(macAddress);
+
+			dispensersData.forEach((dispenserData) => {
+				const { month } = formatDate(dispenserData.updatedTime);
+
+				if (dispenserData.stocked) {
+					monthStockedTime[month]++;
+				} else {
+					monthUsedTime[month]++;
 				}
 			});
 
-			setData({
-				allUsedCount: dispenser.allUsedCount,
-				allStockedTimes: String(stockedTimes),
+			monthUsedTime.forEach((usedTimes) => (allUsedCount += usedTimes));
+
+			monthStockedTime.forEach(
+				(stockedTimes) => (allStockedTimes += stockedTimes)
+			);
+
+			setDashBoardData({
+				allUsedCount: String(allUsedCount),
+				allStockedTimes: String(allStockedTimes),
+				allUsedCountByMonth: monthUsedTime,
+				allStockedTimesByMonth: monthStockedTime,
 			});
 		}
 
@@ -36,23 +104,28 @@ export default function DispenserDetails({ route }: any) {
 
 	return (
 		<View style={styles.container}>
-			<Chart macAddress={macAddress} />
+			<View style={styles.cardList}>
+				<FlatList
+					numColumns={2}
+					columnWrapperStyle={{ justifyContent: "space-between" }}
+					keyExtractor={(_, index: number) => String(index)}
+					data={cardsData}
+					renderItem={({ item }) => {
+						return (
+							<ChartCard title={item.title} data={item.data} />
+						);
+					}}
+				/>
+			</View>
 
-			<FlatList
-				style={styles.cardList}
-				numColumns={2}
-				columnWrapperStyle={{ justifyContent: "space-between" }}
-				keyExtractor={(item, index) => String(index)}
-				data={[
-					{
-						title: "Usado",
-						data: data.allUsedCount,
-					},
-					{ title: "Reabastecido", data: data.allStockedTimes },
-				]}
-				renderItem={({ item }) => {
-					return <ChartCard title={item.title} data={item.data} />;
-				}}
+			<Text style={styles.chartTitle}>Total Utilizado x Mês</Text>
+
+			<DefaultBarChart monthArray={dashBoardData.allUsedCountByMonth} />
+
+			<Text style={styles.chartTitle}>Total Abastecido x Mês</Text>
+
+			<DefaultLineChart
+				monthArray={dashBoardData.allStockedTimesByMonth}
 			/>
 		</View>
 	);
@@ -65,9 +138,22 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 
 		padding: 32,
+		backgroundColor: colors.green_extreme,
 	},
 
 	cardList: {
+		margin: 12,
 		width: "100%",
+	},
+
+	chartTitle: {
+		fontSize: 16,
+		paddingTop: 8,
+		paddingHorizontal: 8,
+		borderTopLeftRadius: 10,
+		borderTopRightRadius: 10,
+		fontFamily: fonts.semiBold,
+		color: colors.green_bright,
+		backgroundColor: colors.green,
 	},
 });

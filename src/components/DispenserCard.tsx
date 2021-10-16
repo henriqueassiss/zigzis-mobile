@@ -1,13 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 
 import colors from "../styles/colors";
 import { DispenserReducedProps } from "../utils/Interfaces";
 
 export function DispenserCard(dispenser: DispenserReducedProps) {
-	const navigation = useNavigation();
 	let fluidLevelColor;
 	const fluidLevel = parseInt(dispenser.fluidLevel, 10);
 
@@ -19,9 +17,35 @@ export function DispenserCard(dispenser: DispenserReducedProps) {
 		fluidLevelColor = "#D21919";
 	}
 
+	function HandleDashBoardVisibility() {
+		if (dispenser.role !== "viewer") {
+			return (
+				<TouchableOpacity
+					style={styles.dashBoardContainer}
+					onPress={dispenser.onPress}
+				>
+					<Ionicons
+						name="stats-chart"
+						size={26}
+						color={colors.white}
+					/>
+				</TouchableOpacity>
+			);
+		}
+
+		return <></>;
+	}
+
 	return (
 		<View style={styles.container}>
-			<View style={styles.dataContainer}>
+			<View
+				style={[
+					styles.dataContainer,
+					dispenser.role !== "viewer"
+						? { width: "84%" }
+						: { width: "100%" },
+				]}
+			>
 				<Text style={styles.local}>{dispenser.local}</Text>
 
 				<View style={styles.dataWrapper}>
@@ -45,7 +69,7 @@ export function DispenserCard(dispenser: DispenserReducedProps) {
 					</Text>
 
 					<Text style={styles.dataText}>
-						Reabastecido em:{" "}
+						Reabastecido em:{"\n"}
 						<Text style={{ fontWeight: "700" }}>
 							{dispenser.lastStockedTime}
 						</Text>
@@ -53,12 +77,7 @@ export function DispenserCard(dispenser: DispenserReducedProps) {
 				</View>
 			</View>
 
-			<TouchableOpacity
-				style={styles.dashBoardContainer}
-				onPress={dispenser.onPress}
-			>
-				<Ionicons name="stats-chart" size={26} color={colors.white} />
-			</TouchableOpacity>
+			<HandleDashBoardVisibility />
 		</View>
 	);
 }
@@ -71,7 +90,6 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 	},
 	dataContainer: {
-		width: "84%",
 		padding: 12,
 		borderRadius: 12,
 		marginBottom: 10,

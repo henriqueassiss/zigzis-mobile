@@ -13,7 +13,7 @@ import colors from "../styles/colors";
 interface Props extends TouchableOpacityProps {
 	title: string;
 	description: string;
-	icon: "person" | "information-circle";
+	icon: "person" | "information-circle" | "stats-chart";
 }
 
 export default function ButtonCard({

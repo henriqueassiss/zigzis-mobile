@@ -6,6 +6,7 @@ import Load from "../components/Load";
 import Header from "../components/Header";
 import RoomCard from "../components/RoomCard";
 import { getAllDispensers } from "../services";
+import ButtonCard from "../components/ButtonCard";
 import { UserProps, RoomListProps, DispenserProps } from "../utils/Interfaces";
 
 export default function Rooms({ route, navigation }: any) {
@@ -14,11 +15,10 @@ export default function Rooms({ route, navigation }: any) {
 
 	// General
 	const user: UserProps = route.params;
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		async function fetchDispensers() {
-			setIsLoading(true);
 			const dispensersDataFromAPI: DispenserProps[] =
 				await getAllDispensers();
 
@@ -43,38 +43,67 @@ export default function Rooms({ route, navigation }: any) {
 				{
 					local: "Sala",
 					dispensers: roomDispensers,
-					onPress: () => navigation.navigate("Dispensers", "sala"),
+					onPress: () =>
+						navigation.navigate("Dispensers", {
+							local: "sala",
+							role: user.role,
+						}),
 				},
 				{
 					local: "Banheiro",
 					dispensers: bathroomDispensers,
 					onPress: () =>
-						navigation.navigate("Dispensers", "banheiro"),
+						navigation.navigate("Dispensers", {
+							local: "banheiro",
+							role: user.role,
+						}),
 				},
 				{
 					local: "Corredor",
 					dispensers: corridorDispensers,
 					onPress: () =>
-						navigation.navigate("Dispensers", "corredor"),
+						navigation.navigate("Dispensers", {
+							local: "corredor",
+							role: user.role,
+						}),
 				},
 				{
 					local: "Elevador",
 					dispensers: elevatorDispensers,
 					onPress: () =>
-						navigation.navigate("Dispensers", "elevador"),
+						navigation.navigate("Dispensers", {
+							local: "elevador",
+							role: user.role,
+						}),
 				},
 			];
 
 			setRoomsList(roomsData);
-			setIsLoading(false);
 		}
 
-		fetchDispensers();
+		fetchDispensers().then(() => setIsLoading(false));
 	}, []);
 
 	function HandleUserData(user: UserProps) {
-		if (user.role === "viewer") {
+		if (user.role !== "admin") {
 			return <Header {...user} />;
+		}
+
+		return <></>;
+	}
+
+	function HandleGeneralDashboard(user: UserProps) {
+		if (user.role !== "viewer") {
+			return (
+				<>
+					<ButtonCard
+						icon={"stats-chart"}
+						title={"Acessar o dashboard geral"}
+						description={"Exibe os dados de todos os dispensers"}
+						onPress={() => navigation.navigate("Dispenser Details")}
+					/>
+				</>
+			);
 		}
 
 		return <></>;
@@ -102,6 +131,8 @@ export default function Rooms({ route, navigation }: any) {
 					);
 				}}
 			/>
+
+			<HandleGeneralDashboard {...user} />
 		</View>
 	);
 }
@@ -114,7 +145,7 @@ const styles = StyleSheet.create({
 
 		padding: 32,
 
-		backgroundColor: colors.white,
+		backgroundColor: colors.green_extreme,
 	},
 
 	roomsList: {

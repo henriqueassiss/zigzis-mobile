@@ -3,13 +3,13 @@ import { View, StyleSheet } from "react-native";
 
 import colors from "../styles/colors";
 import Header from "../components/Header";
-import ButtonCard from "../components/ButtonCard";
 import { UserProps } from "../utils/Interfaces";
+import ButtonCard from "../components/ButtonCard";
 
 export default function Home({ route, navigation }: any) {
 	const user: UserProps = route.params;
 
-	function HandleUserData(user: UserProps) {
+	function HandleUserData() {
 		return (
 			<>
 				<ButtonCard
@@ -22,7 +22,7 @@ export default function Home({ route, navigation }: any) {
 					icon={"information-circle"}
 					title={"Acessar os dispensers"}
 					description={"Salas dos dispensers"}
-					onPress={() => navigation.navigate("Rooms")}
+					onPress={() => navigation.navigate("Rooms", user)}
 				/>
 			</>
 		);
@@ -32,7 +32,7 @@ export default function Home({ route, navigation }: any) {
 		<View style={styles.container}>
 			<Header {...user} />
 
-			<HandleUserData {...user} />
+			<HandleUserData />
 		</View>
 	);
 }
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 
 		padding: 32,
 
-		backgroundColor: colors.white,
+		backgroundColor: colors.green_extreme,
 	},
 
 	roomsList: {
