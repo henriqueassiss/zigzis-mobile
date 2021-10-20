@@ -8,6 +8,7 @@ import Rooms from "../screens/Rooms";
 import Register from "../screens/Register";
 import Dispensers from "../screens/Dispensers";
 import DispenserDetails from "../screens/DispenserDetails";
+import AllDispenserDetails from "../screens/AllDispenserDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,10 @@ export function Routes() {
 				<Stack.Screen
 					name="Dispenser Details"
 					component={DispenserDetails}
+				></Stack.Screen>
+				<Stack.Screen
+					name="All Dispenser Details"
+					component={AllDispenserDetails}
 				></Stack.Screen>
 			</Stack.Navigator>
 		</NavigationContainer>

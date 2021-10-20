@@ -1,3 +1,5 @@
+import colors from "../styles/colors";
+
 export function formatDate(datetime: string) {
 	const date = datetime.split(" ")[0].split("/");
 	const time = datetime.split(" ")[1].split(":");
@@ -58,6 +60,15 @@ export const dashBoard = {
 	allStockedTimesByMonth: arrayMonthNumber,
 };
 
+export const allDispenserDetailsDashboard = {
+	name: "",
+	allUsedCount: 0,
+	allStockedTimes: 0,
+	color: "",
+	legendFontColor: "",
+	legendFontSize: 0,
+};
+
 export const months = [
 	"Jan",
 	"Fev",
@@ -71,4 +82,27 @@ export const months = [
 	"Out",
 	"Nov",
 	"Dez",
+];
+
+export const localInfo = [
+	{
+		local: "Sala",
+		color: colors.white,
+	},
+	{
+		local: "Banheiro",
+		color: colors.green_bright,
+	},
+	{
+		local: "Corredor",
+		color: colors.green_light,
+	},
+	{
+		local: "Elevador",
+		color: colors.green,
+	},
+	{
+		local: "Quarto",
+		color: colors.green_dark,
+	},
 ];

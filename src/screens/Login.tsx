@@ -121,7 +121,7 @@ export default function Login({ navigation }: any) {
 					<Text style={styles.formTitle}>Entrar</Text>
 
 					<DefaultInput
-						placeholder={"Email"}
+						placeholder={"Login"}
 						isInvalid={isEmailInvalid}
 						isFocused={isEmailFocused}
 						onFocus={handleEmailFocus}

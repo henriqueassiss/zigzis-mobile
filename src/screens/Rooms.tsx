@@ -26,6 +26,7 @@ export default function Rooms({ route, navigation }: any) {
 			let bathroomDispensers: number = 0;
 			let corridorDispensers: number = 0;
 			let elevatorDispensers: number = 0;
+			let bedroomDispensers: number = 0;
 
 			dispensersDataFromAPI.forEach((dispenser) => {
 				if (dispenser.local.includes("Sala")) {
@@ -36,6 +37,8 @@ export default function Rooms({ route, navigation }: any) {
 					corridorDispensers++;
 				} else if (dispenser.local.includes("Elevador")) {
 					elevatorDispensers++;
+				} else if (dispenser.local.includes("Quarto")) {
+					bedroomDispensers++;
 				}
 			});
 
@@ -76,6 +79,15 @@ export default function Rooms({ route, navigation }: any) {
 							role: user.role,
 						}),
 				},
+				{
+					local: "Quarto",
+					dispensers: bedroomDispensers,
+					onPress: () =>
+						navigation.navigate("Dispensers", {
+							local: "quarto",
+							role: user.role,
+						}),
+				},
 			];
 
 			setRoomsList(roomsData);
@@ -100,7 +112,9 @@ export default function Rooms({ route, navigation }: any) {
 						icon={"stats-chart"}
 						title={"Acessar o dashboard geral"}
 						description={"Exibe os dados de todos os dispensers"}
-						onPress={() => navigation.navigate("Dispenser Details")}
+						onPress={() =>
+							navigation.navigate("All Dispenser Details")
+						}
 					/>
 				</>
 			);

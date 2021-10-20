@@ -20,7 +20,7 @@ export default function Home({ route, navigation }: any) {
 				/>
 				<ButtonCard
 					icon={"information-circle"}
-					title={"Acessar os dispensers"}
+					title={"Detalhes dos dispensers"}
 					description={"Salas dos dispensers"}
 					onPress={() => navigation.navigate("Rooms", user)}
 				/>

@@ -64,3 +64,12 @@ export interface DashBoardProps {
 	allUsedCountByMonth: Array<number>;
 	allStockedTimesByMonth: Array<number>;
 }
+
+export interface allDispenserDetailsProps {
+	name: string;
+	allUsedCount: number;
+	allStockedTimes: number;
+	color: string;
+	legendFontColor: string;
+	legendFontSize: number;
+}

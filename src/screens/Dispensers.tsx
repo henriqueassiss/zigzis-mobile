@@ -41,10 +41,9 @@ export default function Dispensers({ route, navigation }: any) {
 							macAddress={item.macAddress}
 							lastStockedTime={item.lastStockedTime}
 							onPress={() =>
-								navigation.navigate(
-									"Dispenser Details",
-									item.macAddress
-								)
+								navigation.navigate("Dispenser Details", {
+									macAddress: item.macAddress,
+								})
 							}
 						/>
 					);

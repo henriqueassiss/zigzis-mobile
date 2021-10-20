@@ -4,7 +4,7 @@ import { formatDate } from '../utils';
 import { DispenserProps, DeviceData, LoginProps } from "../utils/Interfaces";
 
 export const baseUrl =
-	"http://ec2-18-118-189-240.us-east-2.compute.amazonaws.com:8080";
+	"http://ec2-3-144-172-139.us-east-2.compute.amazonaws.com:8080";
 
 const api = axios.create({
 	baseURL: baseUrl,
@@ -29,7 +29,7 @@ export async function getLocalDispensers(
 ): Promise<DispenserProps[]> {
 	let data: DispenserProps[] = [];
 	try {
-		await api.get("/dispenser/" + local).then((res) => {
+		await api.get(`/dispenser/${local}`).then((res) => {
 			data = res.data.dispensers;
 		});
 
@@ -47,22 +47,17 @@ export async function getLocalDispensers(
 	return [];
 }
 
-export async function getDispenserByMacAddress(
-	macAddress: string
-): Promise<DispenserProps> {
-	let data: DispenserProps = {
-		local: '',
-		fluidLevel: '',
-		allUsedCount: '',
-		used: '',
-		lastStockedTime: '',
-		macAddress: '',
-		creationDate: '',
-	};
-
+export async function getDeviceData(macAddress: string = ''): Promise<DeviceData[]> {
+	let data: DeviceData[] = [];
 	try {
-		await api.get(`/dispenser/mac/${macAddress}`).then((res) => {
-			data = res.data.dispenser;
+		await api.get(`/devicedata/${macAddress}`).then((res) => {
+			data = res.data;
+		});
+
+		data.forEach((_data) => {
+			const {month, formattedDate} = formatDate(_data.updatedTime);
+
+			_data.updatedTime = formattedDate;
 		});
 
 		return data;
@@ -73,11 +68,10 @@ export async function getDispenserByMacAddress(
 	return data;
 }
 
-export async function getDeviceData(macAddress: string = ''): Promise<DeviceData[]> {
+export async function getDeviceDataByLocal(local: string = ''): Promise<DeviceData[]> {
 	let data: DeviceData[] = [];
 	try {
-		const url = `/devicedata/${macAddress}`;
-		await api.get(url).then((res) => {
+		await api.get(`/devicedata/local/${local}`).then((res) => {
 			data = res.data;
 		});
 
