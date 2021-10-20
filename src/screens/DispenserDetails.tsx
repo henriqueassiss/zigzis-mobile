@@ -12,7 +12,7 @@ import { DefaultBarChart, DefaultLineChart } from "../components/Chart";
 
 export default function DispenserDetails({ route }: any) {
 	// Route Params
-	const { macAddress, local } = route.params;
+	const params = route.params;
 
 	// DashBoard States
 	const [dashBoardData, setDashBoardData] =
@@ -35,49 +35,49 @@ export default function DispenserDetails({ route }: any) {
 
 	useEffect(() => {
 		async function fetchDispenserData() {
-			// const monthUsedTime = [
-			// 	parseInt((Math.random() * 50).toFixed(0)),
-			// 	parseInt((Math.random() * 50).toFixed(0)),
-			// 	parseInt((Math.random() * 50).toFixed(0)),
-			// 	parseInt((Math.random() * 50).toFixed(0)),
-			// 	parseInt((Math.random() * 50).toFixed(0)),
-			// 	parseInt((Math.random() * 50).toFixed(0)),
-			// 	parseInt((Math.random() * 50).toFixed(0)),
-			// 	parseInt((Math.random() * 50).toFixed(0)),
-			// 	parseInt((Math.random() * 50).toFixed(0)),
-			// 	0,
-			// 	0,
-			// 	0,
-			// ];
+			const monthUsedTime = [
+				parseInt((Math.random() * 50).toFixed(0)),
+				parseInt((Math.random() * 50).toFixed(0)),
+				parseInt((Math.random() * 50).toFixed(0)),
+				parseInt((Math.random() * 50).toFixed(0)),
+				parseInt((Math.random() * 50).toFixed(0)),
+				parseInt((Math.random() * 50).toFixed(0)),
+				parseInt((Math.random() * 50).toFixed(0)),
+				parseInt((Math.random() * 50).toFixed(0)),
+				parseInt((Math.random() * 50).toFixed(0)),
+				0,
+				0,
+				0,
+			];
 
-			const monthUsedTime = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+			// const monthUsedTime = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-			// const monthStockedTime = [
-			// 	parseInt((Math.random() * 20).toFixed(0)),
-			// 	parseInt((Math.random() * 20).toFixed(0)),
-			// 	parseInt((Math.random() * 20).toFixed(0)),
-			// 	parseInt((Math.random() * 20).toFixed(0)),
-			// 	parseInt((Math.random() * 20).toFixed(0)),
-			// 	parseInt((Math.random() * 20).toFixed(0)),
-			// 	parseInt((Math.random() * 20).toFixed(0)),
-			// 	parseInt((Math.random() * 20).toFixed(0)),
-			// 	parseInt((Math.random() * 20).toFixed(0)),
-			// 	0,
-			// 	0,
-			// 	0,
-			// ];
+			const monthStockedTime = [
+				parseInt((Math.random() * 20).toFixed(0)),
+				parseInt((Math.random() * 20).toFixed(0)),
+				parseInt((Math.random() * 20).toFixed(0)),
+				parseInt((Math.random() * 20).toFixed(0)),
+				parseInt((Math.random() * 20).toFixed(0)),
+				parseInt((Math.random() * 20).toFixed(0)),
+				parseInt((Math.random() * 20).toFixed(0)),
+				parseInt((Math.random() * 20).toFixed(0)),
+				parseInt((Math.random() * 20).toFixed(0)),
+				0,
+				0,
+				0,
+			];
 
-			const monthStockedTime = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+			// const monthStockedTime = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 			let allUsedCount = 0;
 			let allStockedTimes = 0;
 
 			let dispensersData;
 
-			if (macAddress) {
-				dispensersData = await getDeviceData(macAddress);
+			if (params.macAddress) {
+				dispensersData = await getDeviceData(params.macAddress);
 			} else {
-				dispensersData = await getDeviceDataByLocal(local);
+				dispensersData = await getDeviceDataByLocal(params.local);
 			}
 
 			dispensersData.forEach((dispenserData) => {
@@ -111,6 +111,12 @@ export default function DispenserDetails({ route }: any) {
 
 	return (
 		<View style={styles.container}>
+			{params.plural ? (
+				<Text style={styles.title}>{params.plural}</Text>
+			) : (
+				<></>
+			)}
+
 			<View style={styles.cardList}>
 				<FlatList
 					numColumns={2}
@@ -146,6 +152,11 @@ const styles = StyleSheet.create({
 
 		padding: 32,
 		backgroundColor: colors.green_extreme,
+	},
+
+	title: {
+		fontSize: 24,
+		fontFamily: fonts.bold,
 	},
 
 	cardList: {

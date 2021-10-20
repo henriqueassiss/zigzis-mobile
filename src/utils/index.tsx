@@ -87,22 +87,27 @@ export const months = [
 export const localInfo = [
 	{
 		local: "Sala",
+		plural: "Salas",
 		color: colors.white,
 	},
 	{
 		local: "Banheiro",
+		plural: "Banheiros",
 		color: colors.green_bright,
 	},
 	{
 		local: "Corredor",
+		plural: "Corredores",
 		color: colors.green_light,
 	},
 	{
 		local: "Elevador",
+		plural: "Elevadores",
 		color: colors.green,
 	},
 	{
 		local: "Quarto",
+		plural: "Quartos",
 		color: colors.green_dark,
 	},
 ];

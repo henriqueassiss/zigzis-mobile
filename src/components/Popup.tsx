@@ -16,7 +16,7 @@ import { localInfo } from "../utils";
 interface PopupProps {
 	isPopupVisible: boolean;
 	onCancel: () => void;
-	onSelectItem: (local: string) => void;
+	onSelectItem: (data: Object) => void;
 }
 
 export default function Popup({
@@ -54,7 +54,12 @@ export default function Popup({
 								<>
 									<TouchableOpacity
 										activeOpacity={0.8}
-										onPress={() => onSelectItem(item.local)}
+										onPress={() =>
+											onSelectItem({
+												local: item.local,
+												plural: item.plural,
+											})
+										}
 									>
 										<Text style={styles.cardItem}>
 											{item.local}

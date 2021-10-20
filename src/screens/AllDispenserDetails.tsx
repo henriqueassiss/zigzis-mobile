@@ -24,9 +24,9 @@ export default function AllDispenserDetails({ navigation }: any) {
 		setIsPopupVisible(!isPopupVisible);
 	}
 
-	function navigateToDispenserDashboard(local: string) {
+	function navigateToDispenserDashboard(data: Object) {
 		handleIsPopupVisible();
-		navigation.navigate("Dispenser Details", { local: local });
+		navigation.navigate("Dispenser Details", data);
 	}
 
 	useEffect(() => {

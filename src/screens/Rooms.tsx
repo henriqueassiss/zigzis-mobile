@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 
-import colors from "../styles/colors";
+import { localInfo } from "../utils";
 import Load from "../components/Load";
+import colors from "../styles/colors";
 import Header from "../components/Header";
 import RoomCard from "../components/RoomCard";
-import { getAllDispensers } from "../services";
 import ButtonCard from "../components/ButtonCard";
+import { getAllDispensers } from "../services";
 import { UserProps, RoomListProps, DispenserProps } from "../utils/Interfaces";
 
 export default function Rooms({ route, navigation }: any) {
@@ -22,73 +23,33 @@ export default function Rooms({ route, navigation }: any) {
 			const dispensersDataFromAPI: DispenserProps[] =
 				await getAllDispensers();
 
-			let roomDispensers: number = 0;
-			let bathroomDispensers: number = 0;
-			let corridorDispensers: number = 0;
-			let elevatorDispensers: number = 0;
-			let bedroomDispensers: number = 0;
+			let roomsData: RoomListProps[] = [];
 
-			dispensersDataFromAPI.forEach((dispenser) => {
-				if (dispenser.local.includes("Sala")) {
-					roomDispensers++;
-				} else if (dispenser.local.includes("Banheiro")) {
-					bathroomDispensers++;
-				} else if (dispenser.local.includes("Corredor")) {
-					corridorDispensers++;
-				} else if (dispenser.local.includes("Elevador")) {
-					elevatorDispensers++;
-				} else if (dispenser.local.includes("Quarto")) {
-					bedroomDispensers++;
-				}
+			localInfo.forEach((data) => {
+				const obj = {
+					local: data.local,
+					dispensers: 0,
+					onPress: () =>
+						navigation.navigate("Dispensers", {
+							local: data.local,
+							role: user.role,
+						}),
+				};
+
+				roomsData.push(obj);
 			});
 
-			const roomsData: RoomListProps[] = [
-				{
-					local: "Sala",
-					dispensers: roomDispensers,
-					onPress: () =>
-						navigation.navigate("Dispensers", {
-							local: "sala",
-							role: user.role,
-						}),
-				},
-				{
-					local: "Banheiro",
-					dispensers: bathroomDispensers,
-					onPress: () =>
-						navigation.navigate("Dispensers", {
-							local: "banheiro",
-							role: user.role,
-						}),
-				},
-				{
-					local: "Corredor",
-					dispensers: corridorDispensers,
-					onPress: () =>
-						navigation.navigate("Dispensers", {
-							local: "corredor",
-							role: user.role,
-						}),
-				},
-				{
-					local: "Elevador",
-					dispensers: elevatorDispensers,
-					onPress: () =>
-						navigation.navigate("Dispensers", {
-							local: "elevador",
-							role: user.role,
-						}),
-				},
-				{
-					local: "Quarto",
-					dispensers: bedroomDispensers,
-					onPress: () =>
-						navigation.navigate("Dispensers", {
-							local: "quarto",
-							role: user.role,
-						}),
-				},
-			];
+			dispensersDataFromAPI.forEach((dispenser) => {
+				localInfo.forEach((data) => {
+					if (dispenser.local.includes(data.local)) {
+						const index = roomsData.findIndex((info) => {
+							return info.local === data.local;
+						});
+
+						roomsData[index].dispensers++;
+					}
+				});
+			});
 
 			setRoomsList(roomsData);
 		}

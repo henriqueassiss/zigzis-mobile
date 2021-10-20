@@ -4,7 +4,7 @@ import { formatDate } from '../utils';
 import { DispenserProps, DeviceData, LoginProps } from "../utils/Interfaces";
 
 export const baseUrl =
-	"http://ec2-3-144-172-139.us-east-2.compute.amazonaws.com:8080";
+	"http://ec2-3-136-23-113.us-east-2.compute.amazonaws.com:8080";
 
 const api = axios.create({
 	baseURL: baseUrl,
@@ -127,3 +127,10 @@ export async function loginUser(userData: LoginProps): Promise<any> {
 		console.error(error);
 	}
 }
+
+// Webhook
+export function eventSource() {
+
+}
+
+

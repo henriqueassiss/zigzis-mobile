@@ -16,7 +16,7 @@ export default function Home({ route, navigation }: any) {
 					icon={"person"}
 					title={"Criar novo usuário"}
 					description={"Novos usuários para usarem o aplicativo"}
-					onPress={() => navigation.navigate("Register")}
+					onPress={() => navigation.navigate("Register", user)}
 				/>
 				<ButtonCard
 					icon={"information-circle"}

@@ -33,7 +33,7 @@ export function DefaultBarChart({ monthArray }: Props) {
 						},
 					],
 				}}
-				height={220}
+				height={210}
 				width={width - 64}
 				yAxisLabel=""
 				yAxisSuffix=""
@@ -76,7 +76,7 @@ export function DefaultLineChart({ monthArray }: Props) {
 					],
 				}}
 				bezier
-				height={220}
+				height={210}
 				width={width - 64}
 				yAxisLabel=""
 				renderDotContent={({ x, y, index, indexData }) => (

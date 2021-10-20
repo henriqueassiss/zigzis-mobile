@@ -13,13 +13,14 @@ import colors from "../styles/colors";
 import logo from "../../assets/logo.png";
 import { createUser } from "../services";
 import RolePicker from "../components/Picker";
+import { UserProps } from "../utils/Interfaces";
 import SubmitButton from "../components/SubmitButton";
 import DefaultInput from "../components/DefaultInput";
 import RegisterAnimation from "../components/RegisterAnimation";
 
 const { width } = Dimensions.get("window");
 
-export default function Register({ navigation }: any) {
+export default function Register({ route, navigation }: any) {
 	// Name States
 	const [name, setName] = useState("");
 	const [isNameFocused, setIsNameFocused] = useState(false);
@@ -48,6 +49,7 @@ export default function Register({ navigation }: any) {
 	const [passwordIcon, setPasswordIcon] = useState<"eye" | "eye-off">("eye");
 
 	// Role States
+	const userData: UserProps = route.params;
 	const [role, setRole] = useState<"admin" | "analist" | "viewer">("viewer");
 
 	// General
@@ -211,7 +213,7 @@ export default function Register({ navigation }: any) {
 
 		createUser(user);
 		setIsLoading(false);
-		navigation.navigate("Home");
+		navigation.navigate("Home", userData);
 	}
 
 	return (
