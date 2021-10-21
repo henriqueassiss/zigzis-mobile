@@ -29,6 +29,7 @@ export default function Dispensers({ route, navigation }: any) {
 	return (
 		<View style={styles.container}>
 			<FlatList
+				style={{ width: "100%" }}
 				data={dispensers}
 				keyExtractor={(item, index) => String(index)}
 				renderItem={({ item }) => {
@@ -56,7 +57,10 @@ export default function Dispensers({ route, navigation }: any) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 32,
+		width: "100%",
+		paddingVertical: 42,
+		alignItems: "center",
+		paddingHorizontal: 20,
 		backgroundColor: colors.green_extreme,
 	},
 });

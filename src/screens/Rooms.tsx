@@ -118,7 +118,8 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "flex-start",
 
-		padding: 32,
+		paddingVertical: 42,
+		paddingHorizontal: 20,
 
 		backgroundColor: colors.green_extreme,
 	},

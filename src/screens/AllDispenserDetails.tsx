@@ -106,13 +106,9 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 
-		padding: 32,
+		paddingVertical: 42,
+		paddingHorizontal: 20,
 		backgroundColor: colors.green_extreme,
-	},
-
-	cardList: {
-		margin: 12,
-		width: "100%",
 	},
 
 	chartTitle: {

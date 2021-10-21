@@ -125,6 +125,7 @@ export function DefaultPieChart({
 			<PieChart
 				style={{
 					borderRadius: 12,
+					marginLeft: 30,
 				}}
 				data={data}
 				absolute
@@ -133,7 +134,7 @@ export function DefaultPieChart({
 				accessor={accessor}
 				backgroundColor={"transparent"}
 				height={220}
-				width={width - 64}
+				width={width - 40}
 				chartConfig={{
 					decimalPlaces: 0,
 					barPercentage: 0.4,

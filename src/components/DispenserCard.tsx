@@ -42,7 +42,7 @@ export function DispenserCard(dispenser: DispenserReducedProps) {
 				style={[
 					styles.dataContainer,
 					dispenser.role !== "viewer"
-						? { width: "84%" }
+						? { width: "82%" }
 						: { width: "100%" },
 				]}
 			>
@@ -85,11 +85,13 @@ export function DispenserCard(dispenser: DispenserReducedProps) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		width: "100%",
 		alignItems: "center",
 		flexDirection: "row",
 		justifyContent: "space-between",
 	},
 	dataContainer: {
+		width: "85%",
 		padding: 12,
 		borderRadius: 12,
 		marginBottom: 10,
@@ -117,6 +119,7 @@ const styles = StyleSheet.create({
 	},
 
 	dashBoardContainer: {
+		width: "15%",
 		padding: 12,
 		borderRadius: 8,
 		backgroundColor: colors.green,
